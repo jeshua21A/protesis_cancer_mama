@@ -22,24 +22,36 @@ class ControladorPantalla:
         self.vista.boton_rgb.config(command=self.filtro_rgb)
         self.vista.boton_grises.config(command=self.filtro_gray)
         self.vista.boton_canny.config(command=self.filtro_canny)
-        self.vista.boton_grabar.config(command=self.iniciar_grabacion)
+        self.vista.boton_iniciar_grabacion.config(command=self.iniciar_grabacion)
         self.vista.boton_detener_grabacion.config(command=self.detener_grabacion)
         self.vista.boton_ia.config(command=self.activar_claisificador)
+        self.vista.boton_extraer_frames.config(command=self.extraer_frames)
 
     # Eventos de los botones
     def activar_camara(self):
+        self.vista.boton_inicio.config(state=tk.DISABLED)
+        self.vista.boton_fin.config(state=tk.NORMAL)
+        self.vista.boton_iniciar_grabacion.config(state=tk.NORMAL)
+        self.vista.boton_ia.config(state=tk.NORMAL)
+        self.vista.boton_detener_grabacion.config(state=tk.DISABLED)
         self.modelo.activar_camara()
 
     def desactivar_camara(self):
+        self.vista.boton_fin.config(state=tk.DISABLED)
+        self.vista.boton_inicio.config(state=tk.NORMAL)
+        self.vista.boton_iniciar_grabacion.config(state=tk.DISABLED)
+        self.vista.boton_ia.config(state=tk.DISABLED)
         self.modelo.desactivar_camara()
 
     def iniciar_grabacion(self):
-        self.vista.boton_grabar.config(state=tk.DISABLED)
+        self.vista.boton_iniciar_grabacion.config(state=tk.DISABLED)
+        self.vista.boton_fin.config(state=tk.DISABLED)
         self.vista.boton_detener_grabacion.config(state=tk.NORMAL)
         self.modelo.iniciar_grabacion()
 
     def detener_grabacion(self):
-        self.vista.boton_grabar.config(state=tk.NORMAL)
+        self.vista.boton_iniciar_grabacion.config(state=tk.NORMAL)
+        self.vista.boton_fin.config(state=tk.NORMAL)
         self.vista.boton_detener_grabacion.config(state=tk.DISABLED)
         self.modelo.detener_grabacion()
 
@@ -60,3 +72,6 @@ class ControladorPantalla:
     def desactivar_claisificador(self):
         self.vista.boton_ia.config(command=self.activar_claisificador)
         self.modelo.desactivar_clasificador()
+    
+    def extraer_frames(self):
+        self.modelo.seleccionar_video()

@@ -45,15 +45,17 @@ class VistaPantalla:
         self.boton_fin = tk.Button(self.pantalla, text="Terminar", image=self.imagen_boton_fin, width=90, height=60, font=("Calibri", 12))
         self.boton_fin.place(x=180, y=60)
 
-        self.ruta_imagen_boton_captura = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/captura.png"
-        self.imagen_boton_captura = tk.PhotoImage(file=self.ruta_imagen_boton_captura)
-        self.boton_grabar = tk.Button(self.pantalla, text="Capturar", image=self.imagen_boton_captura, width=90, height=50, font=("Calibri", 12))
-        self.boton_grabar.place(x=70, y=137)
+        self.ruta_imagen_boton_iniciar_grabacion = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/captura.png"
+        self.imagen_boton_iniciar_grabacion = tk.PhotoImage(file=self.ruta_imagen_boton_iniciar_grabacion)
+        self.boton_iniciar_grabacion = tk.Button(self.pantalla, text="Capturar", image=self.imagen_boton_iniciar_grabacion, width=90, height=50, font=("Calibri", 12))
+        self.boton_iniciar_grabacion.place(x=70, y=137)
+        self.boton_iniciar_grabacion.config(state=tk.DISABLED)
 
         self.ruta_imagen_boton_detener_grabacion = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/parar.png"
         self.imagen_boton_detener_grabacion = tk.PhotoImage(file=self.ruta_imagen_boton_detener_grabacion)
         self.boton_detener_grabacion = tk.Button(self.pantalla, text="Detener Grabacion", image=self.imagen_boton_detener_grabacion, width=90, height=50, font=("Calibri", 12))
         self.boton_detener_grabacion.place(x=180, y=137)
+        self.boton_detener_grabacion.config(state=tk.DISABLED)
 
         self.ruta_imagen_boton_rgb = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/rgb.png"
         self.imagen_boton_rgb = tk.PhotoImage(file=self.ruta_imagen_boton_rgb)
@@ -73,7 +75,12 @@ class VistaPantalla:
         self.ruta_imagen_boton_ia = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/ia.png"
         self.imagen_boton_ia = tk.PhotoImage(file=self.ruta_imagen_boton_ia)
         self.boton_ia = tk.Button(self.pantalla, text="Activar Clasificador", image=self.imagen_boton_ia, width=200, height=40, font=("Calibri", 12))
-        self.boton_ia.place(x=580, y=560)
+        self.boton_ia.place(x=380, y=560)
+        
+        self.ruta_imagen_extraer_frames = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/extraer_frames.png"
+        self.imagen_extraer_frames = tk.PhotoImage(file=self.ruta_imagen_extraer_frames)
+        self.boton_extraer_frames = tk.Button(self.pantalla, text="Extraer Frames", image=self.imagen_extraer_frames, width=200, height=40, font=("Calibri", 12))
+        self.boton_extraer_frames.place(x=680, y=560)
 
         #Sliders para controlar el valor de los umbrales alto y bajo del filtro de cámara: "Canny"
         self.slider_umbral_alto = tk.Scale(self.pantalla, from_=0, to=255, orient=tk.HORIZONTAL)

@@ -7,6 +7,7 @@ import vista_pantalla as vista
 from PIL import Image as PILImage
 from PIL import ImageTk
 from ultralytics import YOLO
+from tkinter import filedialog
 
 class ModeloPantalla:    
     def __init__ (self):
@@ -114,11 +115,14 @@ class ModeloPantalla:
         ruta = "protesis_cancer_mama/interfaz_grafica/Videos_grabados"
         os.makedirs(ruta, exist_ok=True)
 
+        # Generar un nombre único para el video basado en la cantidad de videos existentes en la carpeta
         nombre = f"video_{len(os.listdir(ruta)) + 1}.avi"
         ruta_completa = os.path.join(ruta, nombre)
 
+        # Definir el codec y crear el objeto VideoWriter para guardar el video
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
 
+        # El tamaño del video se establece en 640x480
         self.video_writer = cv2.VideoWriter(
             ruta_completa,
             fourcc,
@@ -169,4 +173,9 @@ class ModeloPantalla:
     def desactivar_clasificador(self):
         self.clasificando = False
         print("Clasificador desactivado.")
-    
+
+    def seleccionar_video(self):
+        # Abrir un cuadro de diálogo para seleccionar un video en la carpeta del proyecto (Videos_grabados)
+        ruta_video = filedialog.askopenfilename(initialdir="protesis_cancer_mama/interfaz_grafica/Videos_grabados", title="Seleccionar video", filetypes=(("Archivos de video", "*.avi;*.mp4"), ("Todos los archivos", "*.*")))
+        if ruta_video:
+            self.extraer_frames(ruta_video)  
