@@ -19,10 +19,12 @@ class ControladorPantalla:
 
         self.vista.boton_inicio.config(command=self.activar_camara)
         self.vista.boton_fin.config(command=self.desactivar_camara)
-        self.vista.boton_captura.config(command=self.captura_video)
         self.vista.boton_rgb.config(command=self.filtro_rgb)
         self.vista.boton_grises.config(command=self.filtro_gray)
         self.vista.boton_canny.config(command=self.filtro_canny)
+        self.vista.boton_grabar.config(command=self.iniciar_grabacion)
+        self.vista.boton_detener_grabacion.config(command=self.detener_grabacion)
+        self.vista.boton_ia.config(command=self.activar_claisificador)
 
     # Eventos de los botones
     def activar_camara(self):
@@ -31,9 +33,16 @@ class ControladorPantalla:
     def desactivar_camara(self):
         self.modelo.desactivar_camara()
 
-    def captura_video(self):
-        self.modelo.captura_video()
-    
+    def iniciar_grabacion(self):
+        self.vista.boton_grabar.config(state=tk.DISABLED)
+        self.vista.boton_detener_grabacion.config(state=tk.NORMAL)
+        self.modelo.iniciar_grabacion()
+
+    def detener_grabacion(self):
+        self.vista.boton_grabar.config(state=tk.NORMAL)
+        self.vista.boton_detener_grabacion.config(state=tk.DISABLED)
+        self.modelo.detener_grabacion()
+
     def filtro_rgb(self):
         self.modelo.filtro_rgb()
     
@@ -42,3 +51,12 @@ class ControladorPantalla:
 
     def filtro_canny(self):
         self.modelo.filtro_canny()
+
+    def activar_claisificador(self):
+        if self.modelo.lblVideo is not None:
+            self.vista.boton_ia.config(command=self.desactivar_claisificador)
+            self.modelo.activar_clasificador()
+    
+    def desactivar_claisificador(self):
+        self.vista.boton_ia.config(command=self.activar_claisificador)
+        self.modelo.desactivar_clasificador()

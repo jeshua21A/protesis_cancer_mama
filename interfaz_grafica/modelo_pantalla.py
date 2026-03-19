@@ -6,6 +6,7 @@ import tkinter as tk
 import vista_pantalla as vista
 from PIL import Image as PILImage
 from PIL import ImageTk
+from ultralytics import YOLO
 
 class ModeloPantalla:    
     def __init__ (self):
@@ -19,7 +20,13 @@ class ModeloPantalla:
 
         self.slider_umbral_alto = None
         self.slider_umbral_bajo = None
-        self.lblVideo = None        
+        self.lblVideo = None
+
+        self.grabando = False
+        self.guardando_frames = False
+        self.clasificando = False
+        self.video_writer = None
+        self.modelo_ia = None
 
     #Creamos el metodo visualizar para activar los fitros de la camara de video de nuestro dispositivo
     def visualizar(self):
@@ -43,6 +50,16 @@ class ModeloPantalla:
                     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
                 frame = imutils.resize(frame, width=620)
+                
+                if self.grabando and self.video_writer is not None:
+                    self.video_writer.write(self.frame)
+
+                if self.guardando_frames:
+                    self.guardar_frame()
+                
+                if self.clasificando and self.modelo_ia is not None:
+                    results = self.modelo_ia(self.frame)
+                    frame = results[0].plot()
 
                 #Manejo seguro de la imagen para mostrarla en pantalla
                 if len(frame.shape) == 2:
@@ -91,3 +108,65 @@ class ModeloPantalla:
         self.rgb = 0
         self.gray = 0
         self.canny = 1
+
+    # Metodo para activar la grabacion del video y guardar el video en la carpeta del proyecto (Videos_grabados)
+    def iniciar_grabacion(self):
+        ruta = "protesis_cancer_mama/interfaz_grafica/Videos_grabados"
+        os.makedirs(ruta, exist_ok=True)
+
+        nombre = f"video_{len(os.listdir(ruta)) + 1}.avi"
+        ruta_completa = os.path.join(ruta, nombre)
+
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+
+        self.video_writer = cv2.VideoWriter(
+            ruta_completa,
+            fourcc,
+            20.0,
+            (640, 480)
+        )
+
+        self.grabando = True
+        print("Grabando...")
+    
+    # Metodo para detener la grabacion del video
+    def detener_grabacion(self):
+        self.grabando = False
+        if self.video_writer is not None:
+            self.video_writer.release()
+            self.video_writer = None
+        print("Grabación detenida.")
+
+    # Metodo para guardar cada frame del video en la carpeta del proyecto (Imagenes_capturas)
+    # El parametro "salto" indica cada cuantos frames se guardara una imagen, por ejemplo, si salto=30, se guardara una imagen cada 30 frames del video.
+    def extraer_frames(self, ruta_video, salto=30): 
+        ruta_salida = "protesis_cancer_mama/interfaz_grafica/Imagenes_capturas"
+        os.makedirs(ruta_salida, exist_ok=True)
+        cap = cv2.VideoCapture(ruta_video)
+        contador = 0
+        guardados = 0
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            if contador % salto == 0:
+                nombre_frame = f"frame_{contador}.jpg"
+                ruta_frame = os.path.join(ruta_salida, nombre_frame)
+                cv2.imwrite(ruta_frame, frame)
+                guardados += 1
+            contador += 1
+        cap.release()
+        print(f"Se han extraído {contador} frames del video y se han guardado en {ruta_salida}")
+
+    # Metodo para activar la IA de clasificacion de imagenes
+    def activar_clasificador(self):
+        if self.modelo_ia is None:
+            self.modelo_ia = YOLO('protesis_cancer_mama/detector_objetos_yolov11/runs/detect/train22/weights/best.pt')
+        self.clasificando = True
+        print("Clasificador activado.")
+
+    # Metodo para desactivar la IA de clasificacion de imagenes
+    def desactivar_clasificador(self):
+        self.clasificando = False
+        print("Clasificador desactivado.")
+    

@@ -34,7 +34,7 @@ class VistaPantalla:
         self.etiqueta_canny = tk.Label(self.pantalla, text="CONTROL DE UMBRALES DE CANNY:")
         self.etiqueta_canny.place(x=57, y=436)
 
-        #Construcción de los botones para navegar con las funciones d ela pantalla
+        #Construcción de los botones para navegar con las funciones de la pantalla
         self.ruta_imagen_boton_inicio = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/abierto.png"
         self.imagen_boton_inicio = tk.PhotoImage(file=self.ruta_imagen_boton_inicio)
         self.boton_inicio = tk.Button(self.pantalla, text="Iniciar", image=self.imagen_boton_inicio, width=90, height=60, font=("Calibri", 12))
@@ -47,8 +47,13 @@ class VistaPantalla:
 
         self.ruta_imagen_boton_captura = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/captura.png"
         self.imagen_boton_captura = tk.PhotoImage(file=self.ruta_imagen_boton_captura)
-        self.boton_captura = tk.Button(self.pantalla, text="Capturar", image=self.imagen_boton_captura, width=200, height=50, font=("Calibri", 12))
-        self.boton_captura.place(x=70, y=137)
+        self.boton_grabar = tk.Button(self.pantalla, text="Capturar", image=self.imagen_boton_captura, width=90, height=50, font=("Calibri", 12))
+        self.boton_grabar.place(x=70, y=137)
+
+        self.ruta_imagen_boton_detener_grabacion = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/parar.png"
+        self.imagen_boton_detener_grabacion = tk.PhotoImage(file=self.ruta_imagen_boton_detener_grabacion)
+        self.boton_detener_grabacion = tk.Button(self.pantalla, text="Detener Grabacion", image=self.imagen_boton_detener_grabacion, width=90, height=50, font=("Calibri", 12))
+        self.boton_detener_grabacion.place(x=180, y=137)
 
         self.ruta_imagen_boton_rgb = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/rgb.png"
         self.imagen_boton_rgb = tk.PhotoImage(file=self.ruta_imagen_boton_rgb)
@@ -64,6 +69,11 @@ class VistaPantalla:
         self.imagen_boton_canny = tk.PhotoImage(file=self.ruta_imagen_boton_canny)
         self.boton_canny = tk.Button(self.pantalla, text="Canny", image=self.imagen_boton_canny, width=200, height=40, font=("Calibri", 12))
         self.boton_canny.place(x=70, y=365)
+
+        self.ruta_imagen_boton_ia = "protesis_cancer_mama/interfaz_grafica/Detalles_de_pantalla/ia.png"
+        self.imagen_boton_ia = tk.PhotoImage(file=self.ruta_imagen_boton_ia)
+        self.boton_ia = tk.Button(self.pantalla, text="Activar Clasificador", image=self.imagen_boton_ia, width=200, height=40, font=("Calibri", 12))
+        self.boton_ia.place(x=580, y=560)
 
         #Sliders para controlar el valor de los umbrales alto y bajo del filtro de cámara: "Canny"
         self.slider_umbral_alto = tk.Scale(self.pantalla, from_=0, to=255, orient=tk.HORIZONTAL)
